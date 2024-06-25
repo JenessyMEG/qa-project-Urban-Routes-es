@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 # no modificar
 def retrieve_phone_code(driver) -> str:
     """Este código devuelve un número de confirmación de teléfono y lo devuelve como un string.
@@ -37,7 +36,28 @@ def retrieve_phone_code(driver) -> str:
 class UrbanRoutesPage:
     from_field = (By.ID, 'from')
     to_field = (By.ID, 'to')
+    flash_option = (By.CLASS_NAME, "mode active")
+    button_order1 = (By.CLASS_NAME, "button round")
+    card_field = (By.CLASS_NAME, "tcard active")
+    phone_number_button = (By.CLASS_NAME, "np button")
+    next_button = (By.CLASS_NAME, "button full")
+    space_code = (By.ID, "code")
+    confirm_phone_button = (By.CSS_SELECTOR, )
 
+    comfort_rate_button = (By.XPATH, '//button[@data-rate="comfort"]')
+    phone_number_field = (By.ID, 'phone')
+    add_credit_card_button = (By.ID, 'add-card')
+    card_number_field = (By.ID, 'card-number')
+    card_expiry_field = (By.ID, 'card-expiry')
+    card_cvv_field = (By.ID, 'cvv')
+    message_field = (By.ID, 'message')
+    blanket_checkbox = (By.ID, 'blanket')
+    tissues_checkbox = (By.ID, 'tissues')
+    ice_creams_input = (By.ID, 'ice-creams')
+    order_taxi_button = (By.ID, 'order-taxi')
+    driver_info_modal = (By.ID, 'driver-info')
+
+    driver.maximize_window()
     def __init__(self, driver):
         self.driver = driver
 
