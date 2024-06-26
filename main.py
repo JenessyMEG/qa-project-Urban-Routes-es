@@ -57,10 +57,11 @@ class UrbanRoutesPage:
     blanket_checkbox = (By.CLASS_NAME, "reqs.open")          #Campo Lista desplegable
     tissues_checkbox = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span")   #Interruptor
     ice_creams_input = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[3]/div/div[2]/div[1]/div/div[2]/div/div[3]")    #Boton +
-    request_taxi_button = (By.CLASS_NAME, "smart-button-main")     #Boton confirmar "Solicitar carro"
-
+    request_taxi_button = (By.CLASS_NAME, "smart-button")     #Boton confirmar "Pedir carro"
+    window_info_driver = (By.CLASS_NAME, "order-header-content")
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#Metodos
     def __init__(self, driver):
         self.driver = driver
 
@@ -85,10 +86,6 @@ class UrbanRoutesPage:
 
     def select_comfort_rate(self):
         self.driver.find_element(*self.comfort_field).click()
-
-#asert comfort
-    def get_comfort(self):
-        return self.driver.find_element(*self.comfort_field).get_property('value')
 
     def enter_phone_number(self):
         self.driver.find_element(*self.phone_number_field).click()
@@ -141,12 +138,8 @@ class UrbanRoutesPage:
     def request_taxi(self):
         self.driver.find_element(*self.request_taxi_button).click()
 
- #pego
-
-    def wait_for_driver_info_modal(self, timeout=10):
-        WebDriverWait(self.driver, timeout).until(
-            EC.visibility_of_element_located(self.driver_info_modal)
-        )
+    def info_driver(self):
+        self.driver.find_element(*self.window_info_driver)
 
 class TestUrbanRoutes:
 
@@ -183,10 +176,6 @@ class TestUrbanRoutes:
     def test_2_comfort_rate(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.select_comfort_rate()
-        comfort_option = UrbanRoutesPage.comfort_field
-        routes_page.get_comfort() == comfort_option
-
-
 
     def test_3_enter_phone_number(self):
         routes_page = UrbanRoutesPage(self.driver)
@@ -197,7 +186,8 @@ class TestUrbanRoutes:
         phone_code = retrieve_phone_code(driver=self.driver)
         routes_page.code_phone_confirm(phone_code)
         routes_page.button_confirm()
-        time.sleep(5)
+        time.sleep(4)
+
     def test_4_add_credit_card(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.credit_card_field()
@@ -209,6 +199,7 @@ class TestUrbanRoutes:
         routes_page.other_place()
         routes_page.add_button()
         routes_page.close_button()
+        time.sleep(3)
 
     def test_5_send_message(self):
         routes_page = UrbanRoutesPage(self.driver)
@@ -225,9 +216,16 @@ class TestUrbanRoutes:
         routes_page.enter_ice_cream_quantity()
         routes_page.enter_ice_cream_quantity()
 
+    def test_8_confirm_taxi(self):
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.request_taxi()
+
+    def test_9_driver_info(self):
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.info_driver()
+
     def test_wait_page(self):
         time.sleep(10)
-
 
     @classmethod
     def teardown_class(cls):
