@@ -86,6 +86,10 @@ class UrbanRoutesPage:
     def select_comfort_rate(self):
         self.driver.find_element(*self.comfort_field).click()
 
+#asert comfort
+    def get_comfort(self):
+        return self.driver.find_element(*self.comfort_field).get_property('value')
+
     def enter_phone_number(self):
         self.driver.find_element(*self.phone_number_field).click()
 
@@ -131,20 +135,13 @@ class UrbanRoutesPage:
     def check_blanket(self):
         self.driver.find_element(*self.tissues_checkbox).click()
 
-    def enter_ice_cream_quantity(self, quantity):
-     self.driver.find_element(*self.ice_cream_quantity_input).send_keys(quantity)
+    def enter_ice_cream_quantity(self):
+     self.driver.find_element(*self.ice_creams_input).click()
 
     def request_taxi(self):
         self.driver.find_element(*self.request_taxi_button).click()
 
  #pego
-
-    def enter_ice_cream_quantity(self, quantity):
-        ice_cream_input = self.driver.find_element(*self.ice_cream_quantity_input)
-        ice_cream_input.clear()
-        ice_cream_input.send_keys(quantity)
-
-
 
     def wait_for_driver_info_modal(self, timeout=10):
         WebDriverWait(self.driver, timeout).until(
@@ -186,6 +183,10 @@ class TestUrbanRoutes:
     def test_2_comfort_rate(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.select_comfort_rate()
+        comfort_option = UrbanRoutesPage.comfort_field
+        routes_page.get_comfort() == comfort_option
+
+
 
     def test_3_enter_phone_number(self):
         routes_page = UrbanRoutesPage(self.driver)
@@ -221,8 +222,8 @@ class TestUrbanRoutes:
 
     def test_7_select_ice(self):
         routes_page = UrbanRoutesPage(self.driver)
-        quantity_time = 2
-        routes_page.enter_ice_cream_quantity(quantity_time)
+        routes_page.enter_ice_cream_quantity()
+        routes_page.enter_ice_cream_quantity()
 
     def test_wait_page(self):
         time.sleep(10)
