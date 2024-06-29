@@ -40,3 +40,23 @@ pytest C:\Users\wseve\qa-project-Urban-Routes-es
 
 Es importante recordar que el serividor utilizado posee un tiempo de duracion, el cual se debe renovar en la variable "urban_routes_url" nombrada en el archivo data.py
 
+# Nombres de las pruebas
+
+- def test_1_set_route(self):
+
+- def test_2_comfort_rate(self):
+
+- def test_3_enter_phone_number(self):
+
+- def test_4_add_credit_card(self):
+
+- def test_5_send_message(self):
+
+- def test_6_select_tissues(self):
+
+- def test_7_select_ice(self):
+
+- def test_8_confirm_taxi(self):
+        
+- def test_9_driver_info(self):
+        
