@@ -1,7 +1,7 @@
 ## Jenessy Esteves. Grupo 10. Sprint 8
 # Proyecto Urban Routes 
 ## Driver Urban Routes
-Urban Routes es un servicio que crea rutas para varios tipos de transporte. Calcula el tiempo y el costo del viaje.
+Urban Routes es una aplicación que ofrece servicio que crea rutas para varios tipos de transporte. Calcula el tiempo y el costo del viaje.
 La interfaz posee los campos "Desde" y "Hasta" y hay botones de selección del modo de ruta ("Óptimo", "Flash" y
 "Personal") y también de selección del tipo de transporte (Comfort, laboral, relajante, entre otros), que permite la seleccion de personal de algunas comodidades como mantas y helados.
 El usuario introduce el punto de partida y el destino, y luego los pasos anteriormentes mencionados.
