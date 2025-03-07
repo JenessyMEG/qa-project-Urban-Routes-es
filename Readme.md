@@ -1,7 +1,7 @@
 ## Jenessy Esteves. Grupo 10. Sprint 8
 # Proyecto Urban Routes in Pycharm
 ## Driver Urban Routes
-Urban Routes es un servicio que crea rutas para varios tipos de transporte. Calcula el tiempo y el costo del viaje.
+Urban Routes es una aplicación que ofrece un servicio que crea rutas para varios tipos de transporte. Calcula el tiempo y el costo del viaje.
 La interfaz posee los campos "Desde" y "Hasta" y hay botones de selección del modo de ruta ("Óptimo", "Flash" y
 "Personal") y también de selección del tipo de transporte (Comfort, laboral, relajante, entre otros), que permite la seleccion de personal de algunas comodidades como mantas y helados.
 El usuario introduce el punto de partida y el destino, y luego los pasos anteriormentes mencionados.
@@ -40,3 +40,23 @@ pytest C:\Users\wseve\qa-project-Urban-Routes-es
 
 Es importante recordar que el serividor utilizado posee un tiempo de duracion, el cual se debe renovar en la variable "urban_routes_url" nombrada en el archivo data.py
 
+# Nombres de las pruebas
+
+- def test_1_set_route(self):
+
+- def test_2_comfort_rate(self):
+
+- def test_3_enter_phone_number(self):
+
+- def test_4_add_credit_card(self):
+
+- def test_5_send_message(self):
+
+- def test_6_select_tissues(self):
+
+- def test_7_select_ice(self):
+
+- def test_8_confirm_taxi(self):
+        
+- def test_9_driver_info(self):
+        

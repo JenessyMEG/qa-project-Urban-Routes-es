@@ -1,4 +1,5 @@
 import time
+from cgitb import text
 
 import data
 from selenium import webdriver
@@ -45,6 +46,7 @@ class UrbanRoutesPage:
     next_button = (By.XPATH, "//button[text()='Siguiente']")  #Boton siguiente
     space_code = (By.ID, "code")                          #Campo del codigo, confirmacion
     confirm_phone_button = (By.XPATH, "//button[text()='Confirmar']") #Boton de confirmar
+    check_number = (By.CLASS_NAME, "np-button.filled")      #Campo con el numero
     down = (By.CLASS_NAME, "tariff-picker.shown")       #Bajar cursor
     credit_field = (By.CLASS_NAME, "pp-button,filled")        #Campo "Tarjeta de Credito"
     credit_card_button = (By.CLASS_NAME, 'pp-plus')           #Boton + (Ventana emergente)
@@ -52,13 +54,19 @@ class UrbanRoutesPage:
     cvd = (By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div[2]/form/div[1]/div[2]/div[2]/div[2]/input")     #Campo de confirmacion
     other_space = (By.CLASS_NAME, "pp-buttons")      #Clic en otro lugar
     add_credit_card_button = (By.XPATH, "//button[text()='Agregar']")        #Boton agregar
+    check_card = (By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div[1]/div[2]/div[3]/div[3]/label/span")      #Visto de tarjeta agregada
     close_credit_button = (By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div[1]/button")       #Boton 2 "X"
     message_field = (By.ID, "comment")                       #Campo de comentario
-    blanket_checkbox = (By.CLASS_NAME, "reqs.open")          #Campo Lista desplegable
+    blanket_checkbox = (By.CLASS_NAME, "reqs.open") #Campo Lista desplegable
     tissues_checkbox = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span")   #Interruptor
-    ice_creams_input = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[3]/div/div[2]/div[1]/div/div[2]/div/div[3]")    #Boton +
-    request_taxi_button = (By.CLASS_NAME, "smart-button")     #Boton confirmar "Pedir carro"
-    window_info_driver = (By.CLASS_NAME, "order-header-content")
+    active_button = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span")
+    ice_creams_input = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[3]/div/div[2]/div[1]/div/div[2]/div/div[3]")          #Boton +
+    value_ice = (By.XPATH, "/html/body/div[1]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[3]/div/div[2]/div[1]/div/div[2]/div/div[2]")        #Cantidad de helados
+    request_taxi_button = (By.CLASS_NAME, "smart-button")  #Boton confirmar "Pedir carro"
+    button_taxi = (By.XPATH, "//span[text()='Pedir un taxi']")
+    window_wait_driver = (By.CLASS_NAME, "order-header-content")
+    window_info_driver = (By.CLASS_NAME, "order-header-title")
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #Metodos
@@ -84,8 +92,14 @@ class UrbanRoutesPage:
     def click_taxi(self):
         self.driver.find_element(*self.button_order).click()
 
+    def get_button(self):
+        return self.driver.find_element(*self.button_order)
+
     def select_comfort_rate(self):
         self.driver.find_element(*self.comfort_field).click()
+
+    def get_comfort(self):
+        return self.driver.find_element(*self.tissues_checkbox)
 
     def enter_phone_number(self):
         self.driver.find_element(*self.phone_number_field).click()
@@ -102,6 +116,9 @@ class UrbanRoutesPage:
     def button_confirm(self):
         self.driver.find_element(*self.confirm_phone_button).click()
 
+    def get_add_number(self):
+        return self.driver.find_element(*self.check_number)
+
     def credit_card_field(self):
         self.driver.find_element(*self.credit_field).click()
 
@@ -113,6 +130,12 @@ class UrbanRoutesPage:
 
     def put_number_cvd(self, number_cvd):
         self.driver.find_element(*self.cvd).send_keys(number_cvd)
+
+    def get_card(self):
+        return self.driver.find_element(*self.card_number_field).get_property('value')
+
+    def get_cvd(self):
+        return self.driver.find_element(*self.cvd).get_property('value')
 
     def other_place(self):
         self.driver.find_element(*self.other_space).click()
@@ -126,20 +149,36 @@ class UrbanRoutesPage:
     def enter_message(self, message):
         self.driver.find_element(*self.message_field).send_keys(message)
 
+    def get_message(self):
+        return self.driver.find_element(*self.message_field).get_property('value')
+
     def deploy_checkbox(self):
         self.driver.find_element(*self.blanket_checkbox).click()
 
     def check_blanket(self):
         self.driver.find_element(*self.tissues_checkbox).click()
 
-    def enter_ice_cream_quantity(self):
-     self.driver.find_element(*self.ice_creams_input).click()
+    def get_active_button(self):
+        return self.driver.find_element(*self.active_button)
 
+    def enter_ice_cream_quantity(self):
+        self.driver.find_element(*self.ice_creams_input).click()
+
+    def get_amount_of_ice_cream(self):
+        ice_counter = self.driver.find_element(*self.value_ice)
+        return int (ice_counter.text)
     def request_taxi(self):
         self.driver.find_element(*self.request_taxi_button).click()
 
+    def get_button_taxi(self):
+        return self.driver.find_element(*self.button_taxi)
+
     def info_driver(self):
-        self.driver.find_element(*self.window_info_driver)
+        self.driver.find_element(*self.window_wait_driver)
+
+    def get_window_info_driver(self):
+        return self.driver.find_element(*self.window_info_driver)
+
 
 class TestUrbanRoutes:
 
@@ -166,16 +205,19 @@ class TestUrbanRoutes:
         address_from = data.address_from
         address_to = data.address_to
         routes_page.set_route(address_from, address_to)
+        WebDriverWait(self.driver, 10).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".button.round")))
         assert routes_page.get_from() == address_from
         assert routes_page.get_to() == address_to
-        time.sleep(3)
 
     def test_clic_taxi(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.click_taxi()
+        assert routes_page.get_button()
+
     def test_2_comfort_rate(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.select_comfort_rate()
+        assert routes_page.get_comfort()
 
     def test_3_enter_phone_number(self):
         routes_page = UrbanRoutesPage(self.driver)
@@ -186,7 +228,8 @@ class TestUrbanRoutes:
         phone_code = retrieve_phone_code(driver=self.driver)
         routes_page.code_phone_confirm(phone_code)
         routes_page.button_confirm()
-        time.sleep(4)
+        assert routes_page.get_add_number()
+        WebDriverWait(self.driver, 5).until(expected_conditions.presence_of_element_located((By.ID, "code")))
 
     def test_4_add_credit_card(self):
         routes_page = UrbanRoutesPage(self.driver)
@@ -197,32 +240,40 @@ class TestUrbanRoutes:
         routes_page.put_number_card(number_card)
         routes_page.put_number_cvd(number_cvd)
         routes_page.other_place()
+        assert routes_page.get_card() == number_card
+        assert routes_page.get_cvd() == number_cvd
         routes_page.add_button()
+        WebDriverWait(self.driver, 5).until(expected_conditions.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div[2]/div[2]/div[1]/div[2]/div[3]/div[3]/label/span")))
         routes_page.close_button()
-        time.sleep(3)
 
     def test_5_send_message(self):
         routes_page = UrbanRoutesPage(self.driver)
         text = data.message_for_driver
         routes_page.enter_message(text)
+        assert routes_page.get_message() == text
 
     def test_6_select_tissues(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.deploy_checkbox()
         routes_page.check_blanket()
+        assert routes_page.get_active_button()
 
     def test_7_select_ice(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.enter_ice_cream_quantity()
         routes_page.enter_ice_cream_quantity()
+        ice_value = 2
+        assert routes_page.get_amount_of_ice_cream() == ice_value
 
     def test_8_confirm_taxi(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.request_taxi()
+        assert routes_page.get_button_taxi()
 
     def test_9_driver_info(self):
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.info_driver()
+        assert routes_page.get_window_info_driver()
 
     def test_wait_page(self):
         time.sleep(10)
